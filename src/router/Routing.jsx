@@ -3,6 +3,8 @@ import { Routes, Route, BrowserRouter, Navigate } from "react-router-dom";
 import { PublicLayout } from "../components/layout/public/PublicLayout";
 import { Login } from "../components/user/Login";
 import { SignUp } from "../components/user/SignUp";
+import { PrivateLayout } from "../components/layout/private/PrivateLayout";
+import { Feed } from "../components/post/Feed";
 export const Routing = () => {
   return (
     <BrowserRouter>
@@ -11,6 +13,11 @@ export const Routing = () => {
           <Route index element={<Login />} />
           <Route path="login" element={<Login />} />
           <Route path="registro" element={<SignUp />} />
+        </Route>
+
+        <Route path="/VibeShare" element={<PrivateLayout />}>
+          <Route index element={<Feed />} />
+          <Route path="feed" element={<Feed />} />
         </Route>
       </Routes>
     </BrowserRouter>

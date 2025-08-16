@@ -1,12 +1,21 @@
 import React from "react";
 import { useForm } from "../../hooks/useForm";
+import { apiClientService } from "../../helpers/ApiClientService";
+import { Global } from "../../helpers/Global";
 
 export const SignUp = () => {
   const { form, changed } = useForm({});
-  const saveUser = (e) => {
-    e.preventDefault();
+  const saveUser = async (e) => {
+    e.preventDefault(); //prevenir actualizacion de pantalla
+
     let newUser = form;
-    console.log(newUser);
+    const urlPeticion = Global.urlApiBase + `/user/signup`;
+    const { apiResponse } = await apiClientService(
+      urlPeticion,
+      "POST",
+      newUser
+    );
+    console.log(apiResponse);
   };
   return (
     <>
@@ -24,8 +33,8 @@ export const SignUp = () => {
             <input type="text" name="nick" onChange={changed} />
           </div>
           <div className="form-group">
-            <label htmlFor="email">Correo</label>
-            <input type="email" name="email" onChange={changed} />
+            <label htmlFor="Bio">Bio</label>
+            <input type="text" name="bio" onChange={changed} />
           </div>
           <div className="form-group">
             <label htmlFor="email">Correo</label>

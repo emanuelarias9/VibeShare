@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "../../hooks/useForm";
 import { apiClientService } from "../../helpers/ApiClientService";
 import { Global } from "../../helpers/Global";
 
 export const SignUp = () => {
   const { form, changed } = useForm({});
+  const [success, setSuccess] = useState();
+  const [apiMessage, setApiMessage] = useState("");
   const saveUser = async (e) => {
     e.preventDefault(); //prevenir actualizacion de pantalla
 
@@ -15,7 +17,11 @@ export const SignUp = () => {
       "POST",
       newUser
     );
-    console.log(apiResponse);
+    setSuccess(
+      apiResponse.statusCode === 201 ? true : false,
+      setApiMessage(apiResponse.message)
+    );
+    console.log(success, apiMessage);
   };
   return (
     <>
@@ -23,6 +29,13 @@ export const SignUp = () => {
         <h1 className="content__title">Registro</h1>
       </header>
       <div className="content__posts">
+        <strong className="alert alert-success">
+          {success ? apiMessage : ""}
+        </strong>
+        <strong className="alert alert-danger">
+          {!success ? apiMessage : ""}
+        </strong>
+        <br />
         <form className="register-form" onSubmit={saveUser}>
           <div className="form-group">
             <label htmlFor="username">Nombre de usuario</label>

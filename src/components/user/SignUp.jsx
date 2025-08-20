@@ -5,7 +5,7 @@ import { Global } from "../../helpers/Global";
 
 export const SignUp = () => {
   const { form, changed } = useForm({});
-  const [success, setSuccess] = useState();
+  const [success, setSuccess] = useState("");
   const [apiMessage, setApiMessage] = useState("");
   const saveUser = async (e) => {
     e.preventDefault(); //prevenir actualizacion de pantalla
@@ -18,10 +18,9 @@ export const SignUp = () => {
       newUser
     );
     setSuccess(
-      apiResponse.statusCode === 201 ? true : false,
+      apiResponse.statusCode === 201 ? "saved" : "error",
       setApiMessage(apiResponse.message)
     );
-    console.log(success, apiMessage);
   };
   return (
     <>
@@ -29,12 +28,18 @@ export const SignUp = () => {
         <h1 className="content__title">Registro</h1>
       </header>
       <div className="content__posts">
-        <strong className="alert alert-success">
-          {success ? apiMessage : ""}
-        </strong>
-        <strong className="alert alert-danger">
-          {!success ? apiMessage : ""}
-        </strong>
+        {success == "saved" ? (
+          <strong className="alert alert-success">{apiMessage}</strong>
+        ) : (
+          ""
+        )}
+
+        {success == "error" ? (
+          <strong className="alert alert-danger">{apiMessage}</strong>
+        ) : (
+          ""
+        )}
+
         <br />
         <form className="register-form" onSubmit={saveUser}>
           <div className="form-group">

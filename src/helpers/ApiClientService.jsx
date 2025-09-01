@@ -1,16 +1,22 @@
-export const apiClientService = async (
+export const apiClientService = async ({
   urlPeticion,
   method = "GET",
+  token = null,
   data = null,
-  file = false
-) => {
+  file = false,
+}) => {
   let peticion;
   let loading = true;
   let apiResponse;
 
+  const baseHeaders = { "Content-Type": "application/json" };
+  const headers = token
+    ? { ...baseHeaders, Authorization: token }
+    : baseHeaders;
+
   if (method === "HEAD") {
     peticion = await fetch(urlPeticion, {
-      method: method,
+      method,
     });
     apiResponse = peticion;
     loading = false;
@@ -19,7 +25,8 @@ export const apiClientService = async (
 
   if (method === "GET" || method === "DELETE") {
     peticion = await fetch(urlPeticion, {
-      method: method,
+      method,
+      headers,
     });
     apiResponse = await peticion.json();
     loading = false;
@@ -28,8 +35,9 @@ export const apiClientService = async (
 
   if (file && (method === "PUT" || method === "POST")) {
     peticion = await fetch(urlPeticion, {
-      method: method,
+      method,
       body: data,
+      headers: token ? { Authorization: token } : undefined,
     });
     apiResponse = await peticion.json();
     loading = false;
@@ -38,10 +46,8 @@ export const apiClientService = async (
 
   if (!file && (method === "PUT" || method === "POST")) {
     peticion = await fetch(urlPeticion, {
-      method: method,
-      headers: {
-        "Content-Type": "application/json",
-      },
+      method,
+      headers,
       body: JSON.stringify(data),
     });
     apiResponse = await peticion.json();

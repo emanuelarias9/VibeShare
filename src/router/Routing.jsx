@@ -5,21 +5,24 @@ import { Login } from "../components/user/Login";
 import { SignUp } from "../components/user/SignUp";
 import { PrivateLayout } from "../components/layout/private/PrivateLayout";
 import { Feed } from "../components/post/Feed";
+import { AuthProvider } from "../context/AuthProvider";
 export const Routing = () => {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<PublicLayout />}>
-          <Route index element={<Login />} />
-          <Route path="login" element={<Login />} />
-          <Route path="registro" element={<SignUp />} />
-        </Route>
+      <AuthProvider>
+        <Routes>
+          <Route path="/" element={<PublicLayout />}>
+            <Route index element={<Login />} />
+            <Route path="login" element={<Login />} />
+            <Route path="registro" element={<SignUp />} />
+          </Route>
 
-        <Route path="/VibeShare" element={<PrivateLayout />}>
-          <Route index element={<Feed />} />
-          <Route path="feed" element={<Feed />} />
-        </Route>
-      </Routes>
+          <Route path="/VibeShare" element={<PrivateLayout />}>
+            <Route index element={<Feed />} />
+            <Route path="feed" element={<Feed />} />
+          </Route>
+        </Routes>
+      </AuthProvider>
     </BrowserRouter>
   );
 };

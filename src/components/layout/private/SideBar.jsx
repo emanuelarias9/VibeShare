@@ -1,28 +1,41 @@
-import React from "react";
 import avatar from "../../../assets/img/user.png";
+import useAuth from "../../../hooks/useAuth";
+import { Global } from "../../../helpers/Global";
 export const SideBar = () => {
+  const { user } = useAuth();
+  const urlAvatar = `${Global.urlApiBase}/user/avatar`;
+  console.log(urlAvatar);
   return (
     <aside className="layout__aside">
       <header className="aside__header">
-        <h1 className="aside__title">Hola, Emanuel</h1>
+        <h1 className="aside__title">Hola, {user.nick}</h1>
       </header>
 
       <div className="aside__container">
         <div className="aside__profile-info">
           <div className="profile-info__general-info">
             <div className="general-info__container-avatar">
-              <img
-                src={avatar}
-                className="container-avatar__img"
-                alt="Foto de perfil"
-              />
+              {user.image != "default.png" && (
+                <img
+                  src={urlAvatar}
+                  className="container-avatar__img"
+                  alt="Foto de perfil"
+                />
+              )}
+              {user.image == "default.png" && (
+                <img
+                  src={avatar}
+                  className="container-avatar__img"
+                  alt="Foto de perfil"
+                />
+              )}
             </div>
 
             <div className="general-info__container-names">
               <a href="#" className="container-names__name">
                 Emanuel Arias
               </a>
-              <p className="container-names__nickname">Canserbero</p>
+              <p className="container-names__nickname">{user.nick}</p>
             </div>
           </div>
 
